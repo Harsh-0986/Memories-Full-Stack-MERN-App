@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import DelectIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -63,15 +63,14 @@ const Post = ({ post, setCurrentId }) => {
           onClick={() => dispatch(likePost(post._id))}
         >
           <ThumbUpAltIcon fontSize="small" />
-          {post.likeCount}
+          &nbsp; {post.likeCount}
         </Button>
         <Button
           size="small"
           color="primary"
           onClick={() => dispatch(deletePost(post._id))}
         >
-          <DelectIcon fontSize="small" />
-          Delete
+          <DeleteIcon fontSize="small" />
         </Button>
       </CardActions>
     </Card>
