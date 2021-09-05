@@ -14,11 +14,16 @@ import Input from "./Input";
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
-  const isSignUp = true;
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleSubmit = () => {};
 
   const handleChange = () => {};
+
+  const switchLogin = () => {
+    setIsSignUp((prev) => !prev);
+    handleShowPassword(false);
+  };
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -79,6 +84,15 @@ const Auth = () => {
           >
             {isSignUp ? "Sign Up" : "Sign In"}
           </Button>
+          <Grid container justify="center">
+            <Grid item>
+              <Button onClick={switchLogin}>
+                {isSignUp
+                  ? "Already have an account? Sign In"
+                  : "Don't have an account? Sign Up"}
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </Paper>
     </Container>
