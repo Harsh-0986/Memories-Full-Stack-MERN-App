@@ -10,15 +10,40 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
+import Icon from "./icon";
+import GoogleLogin from "react-google-login";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   const handleSubmit = () => {};
 
   const handleChange = () => {};
+
+  const googleSuccess = async (res) => {
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+
+    try {
+      dispatch({ type: "AUTH", data: { result, token } });
+
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const googleFailure = (err) => {
+    console.log(err);
+  };
 
   const switchLogin = () => {
     setIsSignUp((prev) => !prev);
@@ -84,7 +109,26 @@ const Auth = () => {
           >
             {isSignUp ? "Sign Up" : "Sign In"}
           </Button>
-          <Grid container justify="center">
+          <GoogleLogin
+            clientId="351313318762-13n9mbpa6adccdvqk50h16tn1tsush92.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <Button
+                className={classes.googleButton}
+                color="primary"
+                fullWidth
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                startIcon={<Icon />}
+                variant="contained"
+              >
+                Sign In with Google
+              </Button>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            cookiePolicy="single_host_origin"
+          />
+          <Grid container justifyContent="center">
             <Grid item>
               <Button onClick={switchLogin}>
                 {isSignUp
