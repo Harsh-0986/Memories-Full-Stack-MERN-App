@@ -55,15 +55,31 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
   const { id: _id } = req.params;
 
+  //Checking if the user is logged in
+  if (!req.userId) return res.json({ message: "User not logged in" });
+
+  // Checking if the post is available
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("No post with that id");
 
+  // If post is available then fetching it
   const post = await PostMessage.findById(_id);
-  const updatedPost = await PostMessage.findByIdAndUpdate(
-    _id,
-    { likeCount: post.likeCount + 1 },
-    { new: true }
-  );
+
+  //Getting the index of the post if the user logged in already liked it
+  const index = post.likes.findIndex((id) => id === String(req.userId));
+
+  if (index === -1) {
+    // Like the post
+    post.likes.push(req.userId);
+  } else {
+    // Dislike the post
+    post.likes = post.likes.filter((id) => id !== String(req.userId));
+  }
+
+  // Editing or liking the post
+  const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+    new: true,
+  });
 
   res.json(updatedPost);
 };
