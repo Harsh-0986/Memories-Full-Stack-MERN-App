@@ -5,6 +5,8 @@ dotenv.config();
 
 const auth = async (req, res, next) => {
   try {
+    console.log(req.header);
+
     // Getting token from frontend
     const token = req.headers.authorization.split(" ")[1];
 
