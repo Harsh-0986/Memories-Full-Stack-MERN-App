@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useStyles from "./styles";
 import { Link, useHistory, useLocation } from "react-router-dom";
 // import memories from "../../images/memories.png";
@@ -14,13 +14,13 @@ const Navbar = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const logout = () => {
+  const logout = useCallback(() => {
     dispatch({ type: "LOGOUT" });
 
     history.push("/");
 
     setUser(null);
-  };
+  }, [dispatch, history]);
 
   useEffect(() => {
     const token = user?.token;
@@ -35,7 +35,7 @@ const Navbar = () => {
     }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
-  }, [location]);
+  }, [location, user, logout]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
