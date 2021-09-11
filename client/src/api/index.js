@@ -1,12 +1,21 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000" });
-
 // For production
-// const url = "https://memories-server-by-harsh.herokuapp.com/posts";
+// const API = axios.create({ baseURL: "https://memories-server-by-harsh.herokuapp.com" });
 
 // For deployment
-// const url = "http://localhost:5000/posts";
+const API = axios.create({ baseURL: "http://localhost:5000" });
+
+// Sending authorization header to backend
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+
+  return req;
+});
 
 export const fetchPosts = () => API.get("/posts");
 
