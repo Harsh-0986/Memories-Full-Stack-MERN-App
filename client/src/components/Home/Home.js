@@ -47,7 +47,7 @@ const Home = () => {
   const handleDelete = (tag) => setTags(tags.filter((t) => t !== tag));
 
   const searchPost = () => {
-    if (search.trim()) {
+    if (search.trim() || tags) {
       // dispatch -> fetch searched post
       dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
     } else {

@@ -33,8 +33,6 @@ const Navbar = () => {
         logout();
       }
     }
-
-    setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location, user, logout]);
 
   return (
