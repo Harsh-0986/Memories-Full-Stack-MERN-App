@@ -11,7 +11,7 @@ import Form from "../Form/Form";
 import Posts from "../Posts/Posts";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getPosts } from "../../actions/posts";
+import { getPosts, getPostsBySearch } from "../../actions/posts";
 import useStyles from "./styles";
 import Pagination from "../Pagination";
 import { useHistory, useLocation } from "react-router-dom";
@@ -49,6 +49,7 @@ const Home = () => {
   const searchPost = () => {
     if (search.trim()) {
       // dispatch -> fetch searched post
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
     } else {
       history.push("/");
     }
