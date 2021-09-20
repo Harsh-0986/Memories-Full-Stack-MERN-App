@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // For production
-// const API = axios.create({
-//   baseURL: "https://memories-server-by-harsh.herokuapp.com",
-// });
+const API = axios.create({
+  baseURL: "https://memories-server-by-harsh.herokuapp.com",
+});
 
 // For deployment
-const API = axios.create({ baseURL: "http://localhost:5000" });
+// const API = axios.create({ baseURL: "http://localhost:5000" });
 
 // Sending authorization header to backend
 API.interceptors.request.use((req) => {
