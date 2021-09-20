@@ -28,20 +28,21 @@ const Post = ({ post, setCurrentId }) => {
 
   const Likes = () => {
     if (post?.likes?.length > 0) {
-      return post.likes.find(
+      return post?.likes.find(
         (like) => like === (user?.result?.googleId || user?.result?._id)
       ) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {post?.likes.length > 2
+            ? `You and ${post?.likes.length - 1} others`
+            : `${post?.likes.length} like${post?.likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{post?.likes.length}{" "}
+          {post?.likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -55,9 +56,9 @@ const Post = ({ post, setCurrentId }) => {
   };
 
   const openPost = (e) => {
-    // dispatch(getPost(post._id, history));
+    // dispatch(getPost(post??._id, history));
 
-    history.push(`/posts/${post._id}`);
+    history.push(`/posts/${post?._id}`);
   };
 
   return (
@@ -71,15 +72,15 @@ const Post = ({ post, setCurrentId }) => {
         <CardMedia
           className={classes.media}
           image={
-            post.selectedFile ||
+            post?.selectedFile ||
             "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
           }
-          title={post.title}
+          title={post?.title}
         />
         <div className={classes.overlay}>
-          <Typography variant="h6">{post.name}</Typography>
+          <Typography variant="h6">{post?.name}</Typography>
           <Typography variant="body2">
-            {moment(post.createdAt).fromNow()}
+            {moment(post?.createdAt).fromNow()}
           </Typography>
         </div>
         {(user?.result?.googleId === post?.creator ||
@@ -88,7 +89,7 @@ const Post = ({ post, setCurrentId }) => {
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentId(post._id);
+                setCurrentId(post?._id);
               }}
               style={{ color: "white" }}
               size="small"
@@ -99,7 +100,9 @@ const Post = ({ post, setCurrentId }) => {
         )}
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary" component="h2">
-            {post.tags.map((tag) => `#${tag} `)}
+            {post?.tags?.length > 1
+              ? post?.tags.map((tag) => `#${tag} `)
+              : `${post?.tags}`}
           </Typography>
         </div>
         <Typography
@@ -108,11 +111,11 @@ const Post = ({ post, setCurrentId }) => {
           variant="h5"
           component="h2"
         >
-          {post.title}
+          {post?.title}
         </Typography>
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            {post.message.split(" ").splice(0, 20).join(" ")}...
+            {post?.message?.split(" ").splice(0, 20).join(" ")}...
           </Typography>
         </CardContent>
       </ButtonBase>
@@ -121,7 +124,7 @@ const Post = ({ post, setCurrentId }) => {
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={() => dispatch(likePost(post._id))}
+          onClick={() => dispatch(likePost(post?._id))}
         >
           <Likes />
         </Button>
@@ -130,7 +133,7 @@ const Post = ({ post, setCurrentId }) => {
           <Button
             size="small"
             color="secondary"
-            onClick={() => dispatch(deletePost(post._id))}
+            onClick={() => dispatch(deletePost(post?._id))}
           >
             <DeleteIcon fontSize="small" /> &nbsp; Delete
           </Button>
