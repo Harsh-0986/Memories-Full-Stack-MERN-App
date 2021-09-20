@@ -10,7 +10,7 @@ import {
 import moment from "moment";
 
 import useStyles from "./styles";
-import { getPost } from "../../actions/posts";
+import { getPost, getPostsBySearch } from "../../actions/posts";
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -24,7 +24,18 @@ const PostDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (!posts) return null;
+  useEffect(() => {
+    if (post) {
+      dispatch(
+        getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post]);
+
+  const openPost = (_id) => history.push(`/posts/${_id}`);
+
+  if (!post) return null;
 
   if (isLoading)
     return (
@@ -32,6 +43,10 @@ const PostDetails = () => {
         <CircularProgress size="7em" />
       </Paper>
     );
+
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+
+  console.log(recommendedPosts);
 
   return (
     <div className={classes.card}>
@@ -48,11 +63,11 @@ const PostDetails = () => {
           {post?.tags.map((tag) => `#${tag} `)}
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          {post.message}
+          {post?.message}
         </Typography>
-        <Typography variant="h6">Created by: {post.name}</Typography>
+        <Typography variant="h6">Created by: {post?.name}</Typography>
         <Typography variant="body1">
-          {moment(post.createdAt).fromNow()}
+          {moment(post?.createdAt).fromNow()}
         </Typography>
         <Divider style={{ margin: "20px 0" }} />
         <Typography variant="body1">
@@ -68,11 +83,45 @@ const PostDetails = () => {
         <img
           className={classes.media}
           src={
-            post.selectedFile ||
+            post?.selectedFile ||
             "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
           }
-          alt={post.title}
+          alt={post?.title}
         />
+
+        {recommendedPosts && (
+          <div className={classes.section}>
+            <Typography gutterBottom variant="h5">
+              You might also like:
+            </Typography>
+            <Divider />
+            <div className={classes.recommendedPosts}>
+              {recommendedPosts.map(
+                ({ title, message, name, likes, selectedFile, _id }) => (
+                  <div
+                    style={{ margin: "20px", cursor: "pointer" }}
+                    onClick={() => openPost(_id)}
+                    key={_id}
+                  >
+                    <Typography variant="h6" gutterBottom>
+                      {title}
+                    </Typography>
+                    <Typography variant="subtitle2" gutterBottom>
+                      {name}
+                    </Typography>
+                    <Typography variant="subtitle2" gutterBottom>
+                      {message}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Likes: {likes.length}
+                    </Typography>
+                    <img src={selectedFile} alt="Img" width="200px" />
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
