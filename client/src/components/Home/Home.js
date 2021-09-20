@@ -7,15 +7,15 @@ import {
   Paper,
   TextField,
 } from "@material-ui/core";
-import Form from "../Form/Form";
-import Posts from "../Posts/Posts";
+import ChipInput from "material-ui-chip-input";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getPosts, getPostsBySearch } from "../../actions/posts";
-import useStyles from "./styles";
-import Pagination from "../Pagination";
 import { useHistory, useLocation } from "react-router-dom";
-import ChipInput from "material-ui-chip-input";
+import { getPostsBySearch } from "../../actions/posts";
+import Form from "../Form/Form";
+import Pagination from "../Pagination";
+import Posts from "../Posts/Posts";
+import useStyles from "./styles";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -28,6 +28,7 @@ const Home = () => {
   const query = useQuery();
   const history = useHistory();
   const page = query.get("page") || 1;
+  // eslint-disable-next-line no-unused-vars
   const searchQuery = query.get("searchQuery");
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
