@@ -1,12 +1,10 @@
 import { Container } from "@material-ui/core";
 import React from "react";
-
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import Auth from "./components/Auth/Auth";
 import Home from "./components/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
-
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Auth from "./components/Auth/Auth";
-import PostDetails from "./components/PostDetails/PostDetails";
+import PostDetails from "./components/PostDetails/PostDetails.jsx";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
