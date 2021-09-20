@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { Typography, Divider } from "@material-ui/core";
+import {
+  Typography,
+  Divider,
+  Paper,
+  CircularProgress,
+} from "@material-ui/core";
 import moment from "moment";
 
 import useStyles from "./styles";
@@ -18,6 +23,15 @@ const PostDetails = () => {
     dispatch(getPost(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  if (!posts) return null;
+
+  if (isLoading)
+    return (
+      <Paper elevation={6} className={classes.loadingPaper}>
+        <CircularProgress size="7em" />
+      </Paper>
+    );
 
   return (
     <div className={classes.card}>
